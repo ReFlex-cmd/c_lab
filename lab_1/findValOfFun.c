@@ -1,13 +1,15 @@
 #include <stdio.h>
+#include <windows.h>
 #include "math.h"
 
 int main() {
+    SetConsoleOutputCP(CP_UTF8);
     double x_final = 12.0;
     double y;
     double a;
     int counter = 0;
     double matrix[10][4];
-    printf("Set a: ");
+    printf("Установите a: \n");
     scanf("%lf", &a);
     printf("n    x    a    y\n");
     for (double x = -13.0; x < x_final; x += 2.5) {
