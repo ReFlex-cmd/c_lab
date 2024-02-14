@@ -13,7 +13,7 @@ int isVowel(wchar_t c) {
 
 int main() {
     SetConsoleOutputCP(CP_UTF8);
-    wchar_t parasha[] = L"C:\\Users\\ReFlex\\Documents\\GitHub\\c_lab\\lab_3\\parasha.txt";
+    wchar_t parasha[] = L"C:\\Users\\Komar\\c_lab\\lab_3\\parasha.txt";
     FILE *file = _wfopen(parasha, L"r");
     if (file == NULL) {
         fwprintf(stderr, L"Не удалось открыть файл %ls\n", parasha);
@@ -23,19 +23,17 @@ int main() {
     while(fwscanf(file, L"%ls", word) != EOF) {
         wchar_t vowels[1000] = L"";
         wchar_t consonants[1000] = L"";
-        for(int i = 0; i < wcslen(word); i++) {
+        for(int i = 0; i < wcslen(word); i+=2) {
             if (isVowel(word[i])) {
                 wcscat(vowels, &word[i]);
-                wprintf(L"%lc\n", word[i]);
             } else {
                 wcscat(consonants, &word[i]);
-                wprintf(L"%lc\n", word[i]);
             }
         }
-//        wchar_t res[1000] = L"";
-//        wcscpy(res, vowels);
-//        wcscat(res, consonants);
-//        wprintf(L"%ls\n", res);
+        wchar_t res[1000] = L"";
+        wcscpy(res, vowels);
+        wcscat(res, consonants);
+        wprintf(L"%ls\n", res);
     }
     fclose(file);
     return 0;
