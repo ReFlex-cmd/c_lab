@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <windows.h>
-#include <stdlib.h>
 #include <string.h>
 
 int isVowel(char c) {
@@ -9,10 +8,10 @@ int isVowel(char c) {
 }
 
 int main() {
-    char parasha[] = "C:\\Users\\Komar\\c_lab\\lab_3\\parasha_2.txt";
-    FILE *file = fopen(parasha, "r");
+    char readibleFile[] = "C:\\Users\\ReFlex\\Documents\\GitHub\\c_lab\\lab_3\\input.txt";
+    FILE *file = fopen(readibleFile, "r");
     if (file == NULL) {
-        fprintf(stderr, "Unable to open file %s\n", parasha);
+        fprintf(stderr, "Unable to open file %s\n", readibleFile);
         return 1;
     }
     char word[1000];
