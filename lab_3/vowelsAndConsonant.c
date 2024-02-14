@@ -13,6 +13,7 @@ int isVowel(wchar_t c) {
 
 int main() {
     SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
     wchar_t parasha[] = L"C:\\Users\\Komar\\c_lab\\lab_3\\parasha.txt";
     FILE *file = _wfopen(parasha, L"r");
     if (file == NULL) {
@@ -33,7 +34,7 @@ int main() {
         wchar_t res[1000] = L"";
         wcscpy(res, vowels);
         wcscat(res, consonants);
-        wprintf(L"%ls\n", res);
+        wprintf(L"%ls ", res);
     }
     fclose(file);
     return 0;
