@@ -33,5 +33,13 @@ int main() {
     for (int i = 0; i < 2 * n; i++) {
         matrix[i] = rand() % 100;
     }
-    
+    if (k < 0) {
+        fprintf(stderr, "K must be positive");
+        return 1;
+    }
+    if (l < 0) {
+        fprintf(stderr, "L must be positive");
+        return 1;
+    }
+
 }
