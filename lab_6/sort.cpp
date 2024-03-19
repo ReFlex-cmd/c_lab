@@ -1,9 +1,9 @@
 #include <iostream>
 #include <vector>
-#include <random>
 #include <iomanip>
 #include <ctime>
 #include <Windows.h>
+#include <algorithm>
 
 void fillMatrix(std::vector<int>& matrix, int n) {
     srand(time(NULL));
@@ -85,35 +85,20 @@ void shellSortColumn(std::vector<int>& matrix, int n, std::vector<int>& matrix2)
     }
 }
 
-int partition(std::vector<int>& matrix, int left, int right, int n, std::vector<int>& matrix2) {
-    std::copy(matrix.begin(), matrix.end(), matrix2.begin());
-    int pivot = matrix2[right * n];
-    int i = left - 1;
-    for (int j = left; j < right; ++j) {
-        if (matrix2[j * n] < pivot) {
-            ++i;
-            for (int k = 0; k < n; ++k) {
-                std::swap(matrix2[i * n + k], matrix2[j * n + k]);
-            }
-        }
+void quickSortColumn(std::vector<int>& matrix, int column, int n) {
+    std::vector<int> columnData;
+    for (int i = 0; i < n; ++i) {
+        columnData.push_back(matrix[i * n + column]);
     }
-    for (int k = 0; k < n; ++k) {
-        std::swap(matrix2[(i + 1) * n + k], matrix2[right * n + k]);
-    }
-    return i + 1;
-}
-
-void quickSortColumn(std::vector<int>& matrix, int left, int right, int n, std::vector<int>& matrix2) {
-    if (left < right) {
-        int pivot = partition(matrix, left, right, n, matrix2);
-        quickSortColumn(matrix, left, pivot - 1, n, matrix2);
-        quickSortColumn(matrix, pivot + 1, right, n, matrix2);
+    std::sort(columnData.begin(), columnData.end());
+    for (int i = 0; i < n; ++i) {
+        matrix[i * n + column] = columnData[i];
     }
 }
 
 void printMatrix2(const std::vector<int>& matrix2, int n) {
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
-    srand(time(NULL));  // Объявление рандома
+    srand(time(NULL)+1);  // Объявление рандома
     SetConsoleTextAttribute(h, rand() % 8);
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
@@ -151,20 +136,30 @@ int main() {
     bubbleSortColumn(matrix, n, matrix2);
     printMatrix2(matrix2, n);
 
+    SetConsoleTextAttribute(h, start_attribute.wAttributes);
+
     std::cout << "Selection Sort:" << std::endl;
     selectionSortColumn(matrix, n, matrix2);
     printMatrix2(matrix2, n);
+
+    SetConsoleTextAttribute(h, start_attribute.wAttributes);
 
     std::cout << "Insertion Sort:" << std::endl;
     insertionSortColumn(matrix, n, matrix2);
     printMatrix2(matrix2, n);
 
+    SetConsoleTextAttribute(h, start_attribute.wAttributes);
+
     std::cout << "Shell Sort:" << std::endl;
     shellSortColumn(matrix, n, matrix2);
     printMatrix2(matrix2, n);
 
+    SetConsoleTextAttribute(h, start_attribute.wAttributes);
+
     std::cout << "Quick Sort:" << std::endl;
-    quickSortColumn(matrix, 0, n - 1, n, matrix2);
+    for (int j = 0; j < n; ++j) {
+        quickSortColumn(matrix, j, n);
+    }
     printMatrix2(matrix2, n);
 
     return 0;
