@@ -22,14 +22,6 @@ void printMatrix(const std::vector<int>& matrix, int n) {
     }
 }
 
-void matrixPartition(std::vector<int>& matrix, int n, std::vector<int>& matrixColumn) {
-    for (int j = 0; j < n; j++) {
-        for (int i = 0; i < n; i++) {
-            matrixColumn[i] = matrix[i * n];
-        }
-    }
-}
-
 int main() {
     int n;
 
@@ -42,13 +34,10 @@ int main() {
     }
 
     std::vector<int> matrix(n * n);
-    std::vector<int> matrixColumn(n);
 
     std::cout << "Original matrix: " << std::endl;
     fillMatrix(matrix, n);
     printMatrix(matrix, n);
-
-
 
     return 0;
 }
