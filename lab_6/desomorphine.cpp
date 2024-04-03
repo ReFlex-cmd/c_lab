@@ -62,10 +62,8 @@ SortStatsColumn selectionSortColumn(std::vector<std::vector<int>>& matrix, int n
                     min_index = k;
                 }
             }
-            if (min_index != i) {
-                std::swap(matrix[i][j], matrix[min_index][j]);
-                stats.swaps++;
-            }
+            std::swap(matrix[i][j], matrix[min_index][j]);
+            stats.swaps++;
         }
     }
     return stats;
@@ -113,13 +111,6 @@ SortStatsColumn shellSortColumn(std::vector<std::vector<int>>& matrix, int n, st
     return stats;
 }
 
-//SortStatsColumn quickSortColumn(std::vector<std::vector<int>>& matrix, int n, std::vector<std::vector<int>>& matrix2) {
-//    SortStatsColumn stats = {0, 0};
-//    std::copy(matrix.begin(), matrix.end(), matrix2.begin());
-//
-//    return stats;
-//}
-
 void printMatrix2(std::vector<std::vector<int>>& matrix2, int n) {
     HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
     srand(time(NULL)+1);
@@ -162,11 +153,17 @@ int main() {
 
     SetConsoleTextAttribute(h, start_attribute.wAttributes);
 
+    SortStatsColumn bubbleStats = bubbleSortColumn(matrix, n, matrix2);
+    std::cout << "Bubble Sort Stats:\nComparisons: " << bubbleStats.comparisons << "\nSwaps: " << bubbleStats.swaps << std::endl;
+
     std::cout << "Selection Sort:" << std::endl;
     selectionSortColumn(matrix, n, matrix2);
     printMatrix2(matrix2, n);
 
     SetConsoleTextAttribute(h, start_attribute.wAttributes);
+
+    SortStatsColumn selectionStats = selectionSortColumn(matrix, n, matrix2);
+    std::cout << "Selection Sort Stats:\nComparisons: " << selectionStats.comparisons << "\nSwaps: " << selectionStats.swaps << std::endl;
 
     std::cout << "Insertion Sort:" << std::endl;
     insertionSortColumn(matrix, n, matrix2);
@@ -174,26 +171,17 @@ int main() {
 
     SetConsoleTextAttribute(h, start_attribute.wAttributes);
 
+    SortStatsColumn insertionStats = insertionSortColumn(matrix, n, matrix2);
+    std::cout << "Insertion Sort Stats:\nComparisons: " << insertionStats.comparisons << "\nSwaps: " << insertionStats.swaps << std::endl;
+
     std::cout << "Shell Sort:" << std::endl;
     shellSortColumn(matrix, n, matrix2);
     printMatrix2(matrix2, n);
 
     SetConsoleTextAttribute(h, start_attribute.wAttributes);
 
-//    std::cout << "Quick Sort:" << std::endl;
-//    quickSortColumn(matrix, n, matrix2);
-//    printMatrix2(matrix2, n);
-
-    SortStatsColumn bubbleStats = bubbleSortColumn(matrix, n, matrix2);
-    SortStatsColumn selectionStats = selectionSortColumn(matrix, n, matrix2);
-    SortStatsColumn insertionStats = insertionSortColumn(matrix, n, matrix2);
     SortStatsColumn shellStats = shellSortColumn(matrix, n, matrix2);
-//    SortStatsColumn quickStats = quickSortColumn(matrix, n, matrix2);
-    std::cout << "Bubble Sort Stats:\nComparisons: " << bubbleStats.comparisons << "\nSwaps: " << bubbleStats.swaps << std::endl;
-    std::cout << "Selection Sort Stats:\nComparisons: " << selectionStats.comparisons << "\nSwaps: " << selectionStats.swaps << std::endl;
-    std::cout << "Insertion Sort Stats:\nComparisons: " << insertionStats.comparisons << "\nSwaps: " << insertionStats.swaps << std::endl;
     std::cout << "Shell Sort Stats:\nComparisons: " << shellStats.comparisons << "\nSwaps: " << shellStats.swaps << std::endl;
-//    std::cout << "Quick Sort Stats:\nComparisons: " << quickStats.comparisons << "\nSwaps: " << quickStats.swaps << std::endl;
 
     return 0;
 }
