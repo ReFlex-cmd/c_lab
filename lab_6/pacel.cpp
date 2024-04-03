@@ -1,153 +1,149 @@
 #include <iostream>
 #include <vector>
+#include <iomanip>
+#include <ctime>
 #include <algorithm>
 
-using namespace std;
-
-// Global counters for comparisons, swaps, and permutations
-struct SortStats {
-    int comparisons;
-    int swaps;
-};
-
-// Функция для печати матрицы
-void printMatrix(const vector<vector<int> >& matrix) {
-    for (const auto& row : matrix) {
-        for (int num : row) {
-            cout << num << " ";
+void fillMatrix(std::vector<int>& matrix, int n) {
+    srand(time(NULL));
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            matrix[i * n + j] = rand() % 100;
         }
-        cout << endl;
     }
 }
 
-// Функция для сортировки нечетных элементов строки методом пузырька
-void bubbleSort(vector<int>& row) {
-    SortStats stats = {0, 0};
-    int n = row.size();
-    for (int i = 0; i < n - 1; ++i) {
-        for (int j = 0; j < n - i - 1; ++j) {
-            stats.comparisons++;
-            if (row[j] % 2 != 0 && row[j + 1] % 2 != 0 && row[j] > row[j + 1]) {
-                swap(row[j], row[j + 1]);
-                stats.swaps++;
+void printMatrix(const std::vector<int>& matrix, int n) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            std::cout << std::setw(3) << matrix[i * n + j];
+        }
+        std::cout << std::endl;
+    }
+}
+
+void bubbleSort(std::vector<int>& arr) {
+    int n = arr.size();
+    for (int i = 0; i < n-1; i++) {
+        for (int j = 0; j < n-i-1; j++) {
+            if (arr[j] > arr[j+1]) {
+                std::swap(arr[j], arr[j+1]);
             }
         }
     }
 }
 
-// Функция для сортировки нечетных элементов строки методом отбора
-void selectionSort(vector<int>& row) {
-    SortStats stats = {0, 0};
-    int n = row.size();
-    for (int i = 0; i < n - 1; ++i) {
+void selectionSort(std::vector<int>& arr) {
+    int n = arr.size();
+    for (int i = 0; i < n-1; i++) {
         int minIndex = i;
-        for (int j = i + 1; j < n; ++j) {
-            stats.comparisons++;
-            if (row[j] % 2 != 0 && row[j] < row[minIndex]) {
+        for (int j = i+1; j < n; j++) {
+            if (arr[j] < arr[minIndex]) {
                 minIndex = j;
             }
         }
-        if (minIndex != i) {
-            swap(row[i], row[minIndex]);
-            stats.swaps++;
-        }
+        std::swap(arr[i], arr[minIndex]);
     }
 }
 
-// Функция для сортировки нечетных элементов строки методом вставки
-void insertionSort(vector<int>& row) {
-    SortStats stats = {0, 0};
-    int n = row.size();
-    for (int i = 1; i < n; ++i) {
-        int key = row[i];
+void insertionSort(std::vector<int>& arr) {
+    int n = arr.size();
+    for (int i = 1; i < n; i++) {
+        int key = arr[i];
         int j = i - 1;
-        while (j >= 0 && row[j] % 2 != 0 && row[j] > key) {
-            stats.comparisons++;
-            row[j + 1] = row[j];
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
             j = j - 1;
         }
-        row[j + 1] = key;
-        stats.swaps++;
+        arr[j + 1] = key;
     }
 }
 
-// Функция для сортировки нечетных элементов строки методом Шелла
-void shellSort(vector<int>& row) {
-    SortStats stats = {0, 0};
-    int n = row.size();
-    for (int gap = n / 2; gap > 0; gap /= 2) {
-        for (int i = gap; i < n; ++i) {
-            int temp = row[i];
+void shellSort(std::vector<int>& arr) {
+    int n = arr.size();
+    for (int gap = n/2; gap > 0; gap /= 2) {
+        for (int i = gap; i < n; i++) {
+            int temp = arr[i];
             int j;
-            for (j = i; j >= gap && row[j - gap] % 2 != 0 && row[j - gap] > temp; j -= gap) {
-                stats.comparisons++;
-
-                row[j] = row[j - gap];
+            for (j = i; j >= gap && arr[j - gap] > temp; j -= gap) {
+                arr[j] = arr[j - gap];
             }
-            row[j] = temp;
-            stats.swaps++;
+            arr[j] = temp;
         }
     }
 }
 
-// Функция быстрой сортировки для нечетных элементов строки
-void quickSort(vector<int>& row, int low, int high) {
-    SortStats stats = {0, 0};
+int partition(std::vector<int>& arr, int low, int high) {
+    int pivot = arr[high];
+    int i = (low - 1);
+    for (int j = low; j <= high - 1; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            std::swap(arr[i], arr[j]);
+        }
+    }
+    std::swap(arr[i + 1], arr[high]);
+    return (i + 1);
+}
+
+void quickSort(std::vector<int>& arr, int low, int high) {
     if (low < high) {
-        int pivot = row[high];
-        int i = low - 1;
-        for (int j = low; j <= high - 1; ++j) {
-            if (row[j] % 2 != 0 && row[j] < pivot) {
-                stats.comparisons++;
-                ++i;
-                swap(row[i], row[j]);
-                stats.swaps++;
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+void arrangeOddElements(std::vector<int>& matrix, int n) {
+    for (int i = 0; i < n; i++) {
+        std::vector<int> oddElements;
+        for (int j = 0; j < n; j++) {
+            if (matrix[i * n + j] % 2 != 0) {
+                oddElements.push_back(matrix[i * n + j]);
             }
         }
-        swap(row[i + 1], row[high]);
-        int partitionIndex = i + 1;
-
-        quickSort(row, low, partitionIndex - 1);
-        quickSort(row, partitionIndex + 1, high);
-    }
-}
-
-// Функция для генерации случайного числа в диапазоне [min, max]
-int random(int min, int max) {
-    return min + rand() % (max - min + 1);
-}
-int main() {
-    int rows = 3;
-    int cols = 5;
-
-    // Создаем вектор векторов (матрицу)
-    vector<vector<int> > matrix(rows, vector<int>(cols));
-
-    // Инициализируем генератор случайных чисел
-    srand(time(0));
-
-    // Заполняем матрицу случайными числами
-    for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < cols; ++j) {
-            matrix[i][j] = random(1, 100); // Генерируем случайное число от 1 до 100
+        std::sort(oddElements.begin(), oddElements.end());
+        int oddIndex = 0;
+        for (int j = 0; j < n; j++) {
+            if (matrix[i * n + j] % 2 != 0) {
+                matrix[i * n + j] = oddElements[oddIndex++];
+            }
         }
     }
+}
 
-    vector<vector<int> >& matrix_ref = matrix;
+int main() {
+    int n;
 
+    std::cout << "Set N --> " << std::endl;
+    std::cin >> n;
 
-    cout << "Unsorted Matrix:" << endl;
-    printMatrix(matrix);
+    if (n < 2) {
+        std::cerr << "N must be > 2" << std::endl;
+        return 1;
+    }
 
-    cout << "\nSorted Matrix:" << endl;
-    vector<vector<int> > sortedMatrix = matrix;
-    std::cout << "Bubble Sort:" << std::endl;
-    SortStats bubbleStats = bubbleSortColumn(matrix, n, matrix2);
-    SortStats selectionStats = selectionSortColumn(matrix, n, matrix2);
-    std::cout << "Bubble Sort Stats:\nComparisons: " << bubbleStats.comparisons << "\nSwaps: " << bubbleStats.swaps << std::endl;
-    std::cout << "Selection Sort Stats:\nComparisons: " << selectionStats.comparisons << "\nSwaps: " << selectionStats.swaps << std::endl;
+    std::vector<int> matrix(n * n);
 
-    printMatrix(sortedMatrix);
+    std::cout << "Original matrix: " << std::endl;
+    fillMatrix(matrix, n);
+    printMatrix(matrix, n);
+
+    // Sorting algorithms
+    // bubbleSort(matrix);
+    // selectionSort(matrix);
+    // insertionSort(matrix);
+    // shellSort(matrix);
+    quickSort(matrix, 0, n * n - 1);
+
+    std::cout << "\nSorted matrix: " << std::endl;
+    printMatrix(matrix, n);
+
+    // Arrange odd elements
+    arrangeOddElements(matrix, n);
+
+    std::cout << "\nMatrix with odd elements arranged in ascending order: " << std::endl;
+    printMatrix(matrix, n);
 
     return 0;
 }
