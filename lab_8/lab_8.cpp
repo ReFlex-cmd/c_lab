@@ -6,7 +6,8 @@
 #include <unordered_map>
 
 // Функция для поиска хэш-значений пользователя по полному имени
-std::unordered_map<std::string, int> findHashCountsByFullName(const std::vector<User>& users, const std::string& full_name) {
+std::unordered_map<std::string, int>
+findHashCountsByFullName(const std::vector<User> &users, const std::string &full_name) {
     // Извлекаем имя, фамилию и отчество из полного имени
     size_t pos = full_name.find(' '); // Находим позицию первого пробела
     std::string first_name = full_name.substr(0, pos); // Извлекаем имя
@@ -18,7 +19,7 @@ std::unordered_map<std::string, int> findHashCountsByFullName(const std::vector<
     std::unordered_map<std::string, int> hash_counts;
 
     // Проходимся по пользователям
-    for (const auto& user : users) {
+    for (const auto &user: users) {
         // Проверяем, совпадают ли хэш-значения каждого поля с соответствующим полем полного имени
         if (user.getHashFirstName() == user.hashString(first_name) &&
             user.getHashLastName() == user.hashString(last_name) &&
@@ -47,8 +48,10 @@ int main() {
     User Jacob("Jacob", "Lee", "Harris"); // Jacob Lee Harris
     User Jacob2("Jacob", "Lee", "Harris"); // Jacob Lee Harris (There are two users with the same name)
     User Frederick("Frederick", "Martinez", "Anderson"); // Frederick Martinez Anderson
-    User Frederick2("Frederick", "Martinez", "Anderson"); // Frederick Martinez Anderson (There are two users with the same name)
-    User Frederick3("Frederick", "Martinez", "Anderson"); // Frederick Martinez Anderson (There are three users with the same name)
+    User Frederick2("Frederick", "Martinez",
+                    "Anderson"); // Frederick Martinez Anderson (There are two users with the same name)
+    User Frederick3("Frederick", "Martinez",
+                    "Anderson"); // Frederick Martinez Anderson (There are three users with the same name)
 
 
     // Хэшируем каждое поле отдельно для каждого пользователя
@@ -107,13 +110,14 @@ int main() {
     if (hash_counts.empty()) {
         std::cout << "No user found with the name '" << full_name << "'." << std::endl;
     } else {
-        for (const auto& pair : hash_counts) {
+        for (const auto &pair: hash_counts) {
             std::string hash = pair.first;
             int count = pair.second;
             if (count == 1) {
                 std::cout << "Hash value for user " << full_name << ": " << hash << std::endl;
             } else {
-                std::cout << count << " users found with the same name and hash: " << hash << std::endl;
+                std::cout << count << " users named " << full_name << " found with the same name and hash: " << hash
+                          << std::endl;
             }
         }
     }
