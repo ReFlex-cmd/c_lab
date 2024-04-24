@@ -1,7 +1,7 @@
 #include "User.h"
+#include "User.cpp"
 #include <iostream>
 #include <vector>
-#include <unordered_set>
 #include <set>
 #include <unordered_map>
 
@@ -99,7 +99,7 @@ int main() {
     std::cout << "Hash value for Frederick3: " << Frederick3.getHashFirstName() << std::endl;
 
 
-    std::string full_name = "Emily Williams Taylor";
+    std::string full_name = "Jacob Lee Harris";
     // Находим пользователей с заданным полным именем и подсчитываем их хэши
     std::unordered_map<std::string, int> hash_counts = findHashCountsByFullName(users, full_name);
 
