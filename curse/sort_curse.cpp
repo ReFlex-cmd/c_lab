@@ -205,6 +205,7 @@ int main() {
 
     for (int i = 1; i <= 7; i++) {
         n *= i;
+        std::cout << n << std::endl;
         std::vector<int> matrix(n * n);
         std::vector<int> matrix2(n * n);
 
